@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <title>Document</title>
     @vite('resources/css/app.css')
   
@@ -24,7 +25,7 @@
         <!-- Nav Links -->
         <ul class="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
           <li><a class="hover:text-gray-200" href="/items">Inventory</a></li>
-          <li><a class="hover:text-gray-200" href="/pos">Point of Sales</a></li>
+          <li><a class="hover:text-gray-200" href="/sales">Point of Sales</a></li>
           <li><a class="hover:text-gray-200" href="/customers">Customers</a></li>
           <li><a class="hover:text-gray-200" href="#">Contact Us</a></li>
         </ul>

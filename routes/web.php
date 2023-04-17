@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\SaleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +29,5 @@ Route::post('/items/store',[ItemController::class,'item_store']);
 
 Route::get('/customers',[CustomerController::class,'index']);
 Route::post('/customers/store',[CustomerController::class,'store']);
+
+ROute::get('/sales',[SaleController::class,'index']);

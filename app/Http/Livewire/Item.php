@@ -12,6 +12,7 @@ class Item extends Component
     public $search;
     public $category;
     public $category_sort;
+   
     public function mount()
     {
         $this->items = Items::where('status','available')->where('remove',null)->get();
@@ -40,5 +41,7 @@ class Item extends Component
         $this->items = Items::where('status','available')->where('remove',null)->where('category_id',$this->category_sort)->get();
         }
     }
+
+    
 
 }
