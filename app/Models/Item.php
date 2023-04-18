@@ -10,4 +10,11 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = ['name','description','qty','buy_price','sell_price','status','pic','category_id','remove'];
+
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
 }
+

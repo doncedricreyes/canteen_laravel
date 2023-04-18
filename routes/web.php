@@ -30,4 +30,5 @@ Route::post('/items/store',[ItemController::class,'item_store']);
 Route::get('/customers',[CustomerController::class,'index']);
 Route::post('/customers/store',[CustomerController::class,'store']);
 
-ROute::get('/sales',[SaleController::class,'index']);
+Route::get('/sales',[SaleController::class,'index']);
+Route::get('/sales/receipt/{id}',[SaleController::class,'receipt'])->name('print');
