@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +21,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/login',[UserController::class,'login_index'])->name('login');
+Route::post('/login',[UserController::class,'login']);
+Route::middleware(['auth'])->group(function () {
 Route::get('/category',[ItemController::class,'category_index']);
 Route::post('/category',[ItemController::class,'category_store']);
 
@@ -28,7 +31,14 @@ Route::get('/items',[ItemController::class,'item_index']);
 Route::post('/items/store',[ItemController::class,'item_store']);
 
 Route::get('/customers',[CustomerController::class,'index']);
-Route::post('/customers/store',[CustomerController::class,'store']);
+Route::post('/customers',[CustomerController::class,'store']);
 
-Route::get('/sales',[SaleController::class,'index']);
+Route::get('/sales',[SaleController::class,'index'])->middleware('auth');
 Route::get('/sales/receipt/{id}',[SaleController::class,'receipt'])->name('print');
+
+Route::get('/users',[UserController::class,'index']);
+Route::post('/users/store',[UserController::class,'register']);
+
+
+Route::get('/logout',[UserController::class,'logout']);
+});

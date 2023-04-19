@@ -9,7 +9,8 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        return view('customers.index');
+        $customers = Customer::where('status','available')->get();
+        return view('customers.index',['customers'=>$customers]);
     }
 
     public function store(Request $request)
