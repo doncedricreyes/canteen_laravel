@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('section');
             $table->string('status');
             $table->double('discount')->nullable();
+            $table->double('limit')->nullable();
             $table->timestamps();
         });
     }

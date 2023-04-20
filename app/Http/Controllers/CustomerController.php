@@ -26,7 +26,22 @@ class CustomerController extends Controller
         ]);
         $data['middlename'] = $request->middlename;
         $data['status'] = 'available';
-
+        $data['limit'] = 0;
         $query = Customer::create($data);
+    }
+
+    public function check_balance()
+    {
+        return view('customers.check_balance');
+    }
+
+    public function add_balance()
+    {
+        return view('customers.add_balance');
+    }
+
+    public function limit()
+    {
+        return view('customers.limit');
     }
 }

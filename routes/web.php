@@ -32,6 +32,9 @@ Route::post('/items/store',[ItemController::class,'item_store']);
 
 Route::get('/customers',[CustomerController::class,'index']);
 Route::post('/customers',[CustomerController::class,'store']);
+Route::get('/customers/balance',[CustomerController::class,'check_balance']);
+Route::get('/customers/balance/add',[CustomerController::class,'add_balance']);
+Route::get('/customers/balance/limit',[CustomerController::class,'limit']);
 
 Route::get('/sales',[SaleController::class,'index'])->middleware('auth');
 Route::get('/sales/receipt/{id}',[SaleController::class,'receipt'])->name('print');
