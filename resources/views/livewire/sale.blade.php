@@ -26,7 +26,7 @@
         <div class="flex flex-wrap flex-row mx-auto justify-center py-10">
         @foreach($items as $i)
       
-<div class='flex-grow-0 flex-shrink-0 items-center justify-center mt-3  px-2       @if($items->count() == 2)
+<div class='flex-grow-0 flex-shrink-0 items-center justify-center mt-3 px-2 @if($items->count() == 2)
 lg:w-1/2 md:w-1/2 sm:2/3 @endif @if($items->count()>2) md:w-1/2  lg:w-1/4 sm:w-1/2 @endif @if($items->count()==1) w-96 @endif'>
     <div class='w-full  mx-auto bg-white rounded-3xl shadow-xl overflow-hidden'>
 
@@ -42,15 +42,15 @@ lg:w-1/2 md:w-1/2 sm:2/3 @endif @if($items->count()>2) md:w-1/2  lg:w-1/4 sm:w-1
 
 
  
-            <div x-data="{ count: {{$i->qty}} }">
-              <a href=''       
-                x-on:click="count=count+1"
+            <div x-data="{ count: 0, check:{{$i->qty}} }">
+              <button       
+                x-on:click="count=count+1" :disabled="count === check"
               class='block mt-10 w-full px-4 py-3 font-medium tracking-wide text-center capitalize transition-colors duration-300 transform bg-[#FFC933] rounded-[14px] hover:bg-[#FFC933DD] focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-80' wire:click.prevent="add({{$i->id}})">
             <div class="t-0 absolute right-3">
              <p x-text="count" class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white"> </p>
                     </div>
                   Add to cart
-              </a>
+              </button>
 
               <button     
                :disabled="count === 0" x-bind:class="{ 'bg-red-300 text-black': count === 0 }" x-on:click="count=count-1"

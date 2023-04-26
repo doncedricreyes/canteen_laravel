@@ -29,6 +29,8 @@ Route::post('/category',[ItemController::class,'category_store']);
 
 Route::get('/items',[ItemController::class,'item_index']);
 Route::post('/items/store',[ItemController::class,'item_store']);
+Route::put('/items/update/{id}',[ItemController::class,'item_update']);
+Route::put('/items/remove/{id}',[ItemController::class,'item_remove']);
 
 Route::get('/customers',[CustomerController::class,'index']);
 Route::post('/customers',[CustomerController::class,'store']);
@@ -44,4 +46,6 @@ Route::post('/users/store',[UserController::class,'register']);
 
 
 Route::get('/logout',[UserController::class,'logout']);
+
+
 });

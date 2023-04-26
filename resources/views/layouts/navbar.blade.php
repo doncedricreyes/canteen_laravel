@@ -28,7 +28,7 @@
           <li><a class="hover:text-gray-200" href="/sales">Point of Sales</a></li>
           
            <div @click.away="open_customer = false" class="relative" x-data="{ open_customer: false }">
-          <li  ><a @click="open_customer = !open_customer" class="hover:text-gray-200 cursor-pointer">Customers</a></li>
+          <li  ><a @click="open_customer = !open_customer" class="cursor-pointer hover:text-gray-200">Customers</a></li>
 
         <div x-show="open_customer" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg md:w-48">
           <div class="px-2 py-2 bg-white rounded-md shadow dark-mode:bg-gray-800">

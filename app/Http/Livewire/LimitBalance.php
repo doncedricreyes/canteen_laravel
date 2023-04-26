@@ -21,4 +21,12 @@ class LimitBalance extends Component
         $this->balance = Customer::where('rfid',$this->rfid)->where('status','available')->get();
     }
 
+    public function add_limit()
+    {
+        $customer = Customer::where('rfid',$this->rfid)->where('status','available')->first();
+        $customer->update([
+            'limit'=>$this->limit
+        ]);
+    }
+
 }

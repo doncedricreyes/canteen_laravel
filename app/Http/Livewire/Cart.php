@@ -31,6 +31,9 @@ class Cart extends Component
         $query = Sales::where('order_id',$this->order_id)->latest()->first();
         if($query != null){
         $this->total_amount = $query->total_amount;}
+        else{
+            $this->total_amount = 0;
+        }
         if($this->order_id)
         {
         $this->items = Sales::with('Item')->where('order_id',$this->order_id)->get();
@@ -48,6 +51,7 @@ class Cart extends Component
         if($query != null){
             $this->total_amount = $query->total_amount;
         }
+
 
         $this->emit('remove',$id);
     }

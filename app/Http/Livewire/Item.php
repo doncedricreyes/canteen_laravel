@@ -12,10 +12,13 @@ class Item extends Component
     public $search;
     public $category;
     public $category_sort;
+    public $item_id;
+    public $modal;
+    public $edit_items;
    
     public function mount()
     {
-        $this->items = Items::where('status','available')->where('remove',null)->get();
+        $this->items = Items::where('status','available')->where('remove',1)->get();
         $this->category = Category::where('status',1)->get();
     }
 
@@ -28,20 +31,27 @@ class Item extends Component
 
     public function search()
     {
-        $this->items = Items::where('status','available')->where('remove',null)->where('name','like',"%$this->search%")->get();
+        $this->items = Items::where('status','available')->where('remove',1)->where('name','like',"%$this->search%")->get();
     }
 
     public function sort()
     {
         if($this->category_sort == 'all')
         {
-            $this->items = Items::where('status','available')->where('remove',null)->get(); 
+            $this->items = Items::where('status','available')->where('remove',1)->get(); 
         }
         else{
-        $this->items = Items::where('status','available')->where('remove',null)->where('category_id',$this->category_sort)->get();
+        $this->items = Items::where('status','available')->where('remove',1)->where('category_id',$this->category_sort)->get();
         }
     }
 
+
+    public function edit_item($id)
+    {
+        $this->edit_items = Items::with('Category')->where('id',$id)->get();
+        $this->emit('show-modal');
+    }
     
+
 
 }

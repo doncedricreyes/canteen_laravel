@@ -26,7 +26,7 @@ class Sale extends Component
     public function mount()
     {
         $this->category = Category::where('status',1)->get();
-        $this->items = Item::where('status','available')->where('remove',null)->get();
+        $this->items = Item::where('status','available')->where('remove',1)->get();
         $check_sales = Sales::where('status',0)->latest()->first();
         if($check_sales == null)
         {
@@ -55,7 +55,7 @@ class Sale extends Component
         $this->items = Item::all();
       }
       else{
-        $this->items = Item::where('status','available')->where('remove',null)->where('category_id',$id)->get();
+        $this->items = Item::where('status','available')->where('remove',1)->where('category_id',$id)->get();
       }
        
         
@@ -71,6 +71,7 @@ class Sale extends Component
             $name = $i->name;
             $price = $i->sell_price;
             $category = $i->category_id;
+            $qty_left = $i->qty;
         }
         
         $data['order_id'] = $this->order_id;
@@ -82,7 +83,8 @@ class Sale extends Component
 
 
  
-
+      if($qty_left >0)
+        {
         $item_check = Sales::where('order_id',$this->order_id)->where('item_id',$id)->get();
   
         if($item_check->isNotEmpty())
@@ -111,9 +113,11 @@ class Sale extends Component
 
         Item::where('id',$id)->decrement('qty',1);
 
-        $this->items = Item::where('status','available')->where('remove',null)->get();
+        $this->items = Item::where('status','available')->where('remove',1)->get();
         $this->emit('cart_order',$this->order_id);
-    }
+    
+      }
+   }
 
  
     public function remove($id)
@@ -133,7 +137,7 @@ class Sale extends Component
           $data->delete();
         }
         Item::where('id',$id)->increment('qty',1);
-        $this->items = Item::where('status','available')->where('remove',null)->get();
+        $this->items = Item::where('status','available')->where('remove',1)->get();
         $this->emit('cart_order',$this->order_id);
     }
  
