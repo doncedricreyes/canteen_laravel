@@ -8,9 +8,10 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\Sales;
 use App\Models\Customer;
+use App\Models\BalanceHistory;
 use Livewire\WithPagination;
-
 use Carbon\Carbon;
+
 class Sale extends Component
 {
     use WithPagination;
@@ -39,14 +40,13 @@ class Sale extends Component
        
     }
 
-    
-  
-    
+
     public function render()
     {
      
         return view('livewire.sale');
     }
+
 
     public function sort($id)
     {
@@ -60,6 +60,7 @@ class Sale extends Component
        
         
     }
+
 
     public function add($id)
     {
@@ -149,10 +150,21 @@ class Sale extends Component
 
        if($total_amount->total_amount <= $customer->balance && $customer->balance != 0)
        {
+
+          $customer_id = $customer->id;
+          $old_balance = $customer->balance;
+          $added_balance = -$total_amount->total_amount;
+          $new_balance = $old_balance + $added_balance;
+          $balance_history = BalanceHistory::create([
+            'customer_id' => $customer_id,
+            'old_balance' => $old_balance,
+            'added_balance' => $added_balance,
+            'new_balance' => $new_balance
+          ]);
+
           $customer->decrement('balance',$total_amount->total_amount);
-
           $update_sales = Sales::where('order_id',$this->order_id)->update(['customer_id'=>$customer->id,'mop'=>'card','status'=>1,'amount_paid'=>$total_amount->total_amount,'change'=>0]);
-
+          
           return redirect()->route('print', ['id' => $this->order_id]);
         
        }

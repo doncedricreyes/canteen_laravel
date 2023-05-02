@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\BalanceHistory;
 use Livewire\Component;
 use App\Models\Customer;
 
@@ -23,8 +24,25 @@ class AddBalance extends Component
 
     public function add_balance()
     {
+        $customer = Customer::where('rfid',$this->rfid)->first();
+        $customer_id = $customer->id;
+        $old_balance = $customer->balance;
+        $added_balance = $this->add_balance;
+        $new_balance = $old_balance + $added_balance;
+        
         Customer::where('rfid',$this->rfid)->increment('balance',$this->add_balance);
         $this->balance = Customer::where('rfid',$this->rfid)->where('status','available')->get();
         $this->add_balance = 0;
+
+
+
+        $balance_history = BalanceHistory::create([
+            'customer_id' => $customer_id,
+            'old_balance' => $old_balance,
+            'added_balance' => $added_balance,
+            'new_balance' => $new_balance
+        ]);
+
+
     }
 }
