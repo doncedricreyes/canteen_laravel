@@ -23,10 +23,11 @@
         </aside>
     
         <!-- main content page -->
-        <div class="flex flex-row flex-wrap justify-center py-10 mx-auto">
+    
+        <div class="flex flex-row flex-wrap justify-center py-10 mx-auto">   
         @foreach($items as $i)
       
-<div class='flex-grow-0 flex-shrink-0 items-center justify-center mt-3 px-2 @if($items->count() == 2)
+<div class='flex-grow-0 flex-shrink-0 items-center justify-center mt-10 px-2 @if($items->count() == 2)
 lg:w-1/2 md:w-1/2 sm:2/3 @endif @if($items->count()>2) md:w-1/2  lg:w-1/4 sm:w-1/2 @endif @if($items->count()==1) w-96 @endif'>
     <div class='w-full mx-auto overflow-hidden bg-white shadow-xl rounded-3xl'>
 

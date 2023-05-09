@@ -9,6 +9,7 @@ use App\Models\Item;
 use App\Models\Sales;
 use App\Models\Customer;
 use App\Models\BalanceHistory;
+use App\Models\Canteen_Balance;
 use Livewire\WithPagination;
 use Carbon\Carbon;
 
@@ -145,8 +146,10 @@ class Sale extends Component
 
     public function card_payment()
     {
-      $total_amount = Sales::where('order_id',$this->order_id)->latest()->first();
+       $total_amount = Sales::where('order_id',$this->order_id)->latest()->first();
        $customer = Customer::where('rfid',$this->rfid)->first();
+       $check_date = Carbon::today()->format('Y-m-d');
+       $canteen_balance = Canteen_Balance::where('date',$check_date)->first();
 
        if($total_amount->total_amount <= $customer->balance && $customer->balance != 0)
        {
@@ -163,8 +166,9 @@ class Sale extends Component
           ]);
 
           $customer->decrement('balance',$total_amount->total_amount);
+          $canteen_balance->increment('new_balance',$total_amount->total_amount);
+
           $update_sales = Sales::where('order_id',$this->order_id)->update(['customer_id'=>$customer->id,'mop'=>'card','status'=>1,'amount_paid'=>$total_amount->total_amount,'change'=>0]);
-          
           return redirect()->route('print', ['id' => $this->order_id]);
         
        }
