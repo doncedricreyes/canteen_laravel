@@ -1,5 +1,5 @@
 <div class="bg-rose-50">
-
+  @include('sweetalert::alert')
 <div class="flex flex-row">
     <div class="w-1/4 px-5 py-5">
     <form wire:submit.prevent="search()" >

@@ -114,7 +114,7 @@
 
 
 <!-- component -->
-<section class="container px-4 mx-auto">
+<section class="container px-4 mx-auto ">
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>
             <div class="flex items-center gap-x-3">
@@ -163,6 +163,9 @@
                         <thead class="bg-gray-50 dark:bg-gray-800">
                             <tr>
                                 <th scope="col" class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                  #
+                               </th>
+                                <th scope="col" class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     <button class="flex items-center gap-x-3 focus:outline-none">
                                         <span>Name</span>
 
@@ -184,6 +187,8 @@
 
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Balance</th>
 
+                                <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Status</th>
+
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400"></th>
                             </tr>
                         </thead>
@@ -191,6 +196,11 @@
                             
                             @foreach($customers as $i)
                             <tr>
+                                <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                    <div>
+                                        <h2 class="font-medium text-gray-800 dark:text-white ">{{$loop->iteration}}.</h2>
+                                    </div>
+                                </td>
                                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div>
                                         <h2 class="font-medium text-gray-800 dark:text-white ">{{$i->lastname}}, {{$i->firstname}} {{$i->middlename}}</h2>
@@ -203,16 +213,36 @@
                                     {{$i->section}}
                                 </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                    {{$i->balance}}
+                                    &#8369; {{$i->balance}}
                                 </td>
 
 
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                    <button class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg dark:text-gray-300 hover:bg-gray-100">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                        </svg>
+                                        @if($i->status == 'available')
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                                            Active
+                                          </span>
+                                     @else
+                                       <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                                          Inactive
+                                          </span> 
+                                       @endif
+                                </td>
+
+                                <td class="px-4 py-4 text-sm whitespace-nowrap ">
+                                <div class="flex flex-row ">
+                                    
+                                    <button onclick="document.getElementById('create_category_modal').showModal()" class="flex items-center justify-center w-full px-3 py-2 m-auto text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                                      <span><i class="mr-1 fas fa-pencil-alt"></i> Edit</span>
                                     </button>
+
+                                      <button onclick="document.getElementById('create_category_modal').showModal()" class="flex items-center justify-center w-full px-3 py-2 m-auto ml-6 text-sm tracking-wide text-white transition-colors duration-200 bg-red-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-red-600 ">    
+                                        <span><i class="mr-1 fas fa-trash-alt"></i> Remove</span>
+                                    </button>
+                          
+
+          
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach
@@ -223,7 +253,7 @@
         </div>
     </div>
 
-    <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
+    <div class="mt-4 mb-6 sm:flex sm:items-center sm:justify-between ">
         <div class="text-sm text-gray-500 dark:text-gray-400">
             Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span> 
         </div>

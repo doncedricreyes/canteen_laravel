@@ -12,27 +12,32 @@ class ItemController extends Controller
 {
     public function category_index()
     {
-        return view ('category.index');
+        $category = Category::all();
+        $title = 'Remove Category!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
+        return view ('category.index',['category'=>$category]);
     }
 
     public function category_store(Request $request)
     {
         $data = $request->validate([
-            'category' => 'required'
+            'category' => 'required|unique:categories,category'
         ]);
 
         $data['status'] = 1;
         $query = Category::create($data);
 
-        if($query)
+        if($data->fails())
         {
-            Alert::success('Success Title', 'Success Message');
+            Alert::success('Success!', 'Category Successfully Created');
 
-            return redirect('/category')->with('success','Category Successfully Created');
+            return redirect('/category');
         }   
         else
         {
-            return redirect('/category')->withErrors($data);
+            Alert::error('Error Title', 'Error Message');
+            return redirect('/category');
         }
     }
 
@@ -41,6 +46,7 @@ class ItemController extends Controller
     {
         $category = Category::where('status',1)->get();
         $items = Item::where('status','available')->where('remove',1)->get();
+        
         return view('items.index',['category'=>$category,'items'=>$items]);
     }
 
@@ -66,7 +72,7 @@ class ItemController extends Controller
         }
         //dd($data);
         $query = Item::create($data);
-
+        Alert::success('Success!', 'Item Successfully Created');
         return redirect('/items');
     }
 

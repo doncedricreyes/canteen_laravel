@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\BalanceHistory;
 use Livewire\Component;
 use App\Models\Customer;
-
+use RealRashid\SweetAlert\Facades\Alert;
 class AddBalance extends Component
 {
     public $rfid;
@@ -34,7 +34,7 @@ class AddBalance extends Component
         $this->balance = Customer::where('rfid',$this->rfid)->where('status','available')->get();
         $this->add_balance = 0;
 
-
+        Alert::success('Success!', 'Category Successfully Created');
 
         $balance_history = BalanceHistory::create([
             'customer_id' => $customer_id,
@@ -42,6 +42,7 @@ class AddBalance extends Component
             'added_balance' => $added_balance,
             'new_balance' => $new_balance
         ]);
+       
 
 
     }
