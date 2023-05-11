@@ -45,6 +45,10 @@ class UserController extends Controller
         {
             return redirect('/sales');
         }
+        else
+        {
+            return redirect('/login')->withErrors(['login'=>'Invalid Username or Password!']);
+        }
     }
 
     public function logout()

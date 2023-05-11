@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Item;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class ItemController extends Controller
@@ -25,6 +26,8 @@ class ItemController extends Controller
 
         if($query)
         {
+            Alert::success('Success Title', 'Success Message');
+
             return redirect('/category')->with('success','Category Successfully Created');
         }   
         else
