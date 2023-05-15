@@ -42,6 +42,8 @@ class AddBalance extends Component
             'added_balance' => $added_balance,
             'new_balance' => $new_balance
         ]);
+
+        return redirect()->route('print_balance',['id'=>$customer_id]);
        
 
 

@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Validation\Rule;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
     public function index()
     {
-        return view('auth.index');
+        $users = User::all();
+        return view('auth.index',['users'=>$users]);
     }
 
     public function register(Request $request)
@@ -26,7 +29,15 @@ class UserController extends Controller
         $data['status'] = 1;
         $data['password'] = bcrypt($data['password']);
 
-        User::create($data);
+        if(User::create($data))
+        {
+            Alert::success('Account Updated!', 'Your account has been updated successfully.');
+            return redirect()->route('user_index');
+        }
+        else
+        {
+            
+        }
     }
 
     public function login_index()
@@ -55,5 +66,39 @@ class UserController extends Controller
     {
         auth()->logout();
         return redirect('/login');
+    }
+
+    public function profile()
+    {
+        return view('users.profile');
+    }
+
+    public function update_profile(Request $request)
+    {
+        $user = Auth()->user();
+
+ 
+
+        $data = $request->validate([
+            'name' => 'required',
+            'username' => ['required',Rule::unique('users')->ignore($user->id)],
+            'password' => 'nullable|confirmed'
+
+        ]);
+
+        if($request->filled('password'))
+        {
+            $password = bcrypt($data['password']);
+            $user->password = $password;
+        }
+
+        $user->username = $request->username;
+        $user->name = $request->name;
+
+        if($user->save())
+        {
+            Alert::success('Account Updated!', 'Your account has been updated successfully.');
+            return redirect()->back();
+        }
     }
 }

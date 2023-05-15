@@ -28,7 +28,7 @@ class ItemController extends Controller
         $data['status'] = 1;
         $query = Category::create($data);
 
-        if($data->fails())
+        if($query)
         {
             Alert::success('Success!', 'Category Successfully Created');
 
@@ -37,7 +37,7 @@ class ItemController extends Controller
         else
         {
             Alert::error('Error Title', 'Error Message');
-            return redirect('/category');
+            return redirect('/categoryasdasd');
         }
     }
 

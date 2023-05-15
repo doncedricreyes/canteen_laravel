@@ -53,4 +53,11 @@ class CustomerController extends Controller
     {
         return view('customers.limit');
     }
+
+    public function print_balance($id)
+    {
+        $balance = BalanceHistory::where('customer_id',$id)->latest()->first();
+        $customer = Customer::where('id',$id)->first();
+        return view('customers.print_balance',['balance'=>$balance,'customer'=>$customer]);
+    }
 }

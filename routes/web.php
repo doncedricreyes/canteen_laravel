@@ -23,6 +23,8 @@ Route::get('/', function () {
 
 Route::get('/login',[UserController::class,'login_index'])->name('login');
 Route::post('/login',[UserController::class,'login']);
+
+
 Route::middleware(['auth'])->group(function () {
 Route::get('/category',[ItemController::class,'category_index']);
 Route::post('/category',[ItemController::class,'category_store']);
@@ -37,16 +39,16 @@ Route::post('/customers',[CustomerController::class,'store']);
 Route::get('/customers/balance',[CustomerController::class,'check_balance']);
 Route::get('/customers/balance/add',[CustomerController::class,'add_balance']);
 Route::get('/customers/balance/limit',[CustomerController::class,'limit']);
-
+Route::get('/customers/balance/print/{id}',[CustomerController::class,'print_balance'])->name('print_balance');
 Route::get('/sales',[SaleController::class,'index'])->middleware('auth')->name('sales');
 Route::get('/open_balance',[SaleController::class,'opening_balance'])->middleware('auth')->name('open_balance');
 Route::post('/open_balance',[SaleController::class,'store_opening_balance'])->middleware('auth');
 Route::get('/sales/receipt/{id}',[SaleController::class,'receipt'])->name('print');
 
-Route::get('/users',[UserController::class,'index']);
+Route::get('/users',[UserController::class,'index'])->name('user_index');
 Route::post('/users/store',[UserController::class,'register']);
-
-
+Route::get('/profile',[UserController::class,'profile']);
+Route::put('/profile',[UserController::class,'update_profile']);
 Route::get('/logout',[UserController::class,'logout']);
 
 

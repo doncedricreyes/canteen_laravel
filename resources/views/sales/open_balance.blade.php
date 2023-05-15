@@ -1,8 +1,9 @@
 @extends('layouts.navbar')
-
+@include('sweetalert::alert')
 @section('content')
-
+ 
 <div class="container p-4 mx-auto mt-10 rounded-lg shadow-lg">
+ 
   <form method="POST" action="/open_balance">
   @csrf
     <h2 class="mb-4 text-2xl font-bold">Set Up Account</h2>

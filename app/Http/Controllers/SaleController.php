@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Sales;
 use App\Models\Canteen_Balance;
 use Carbon\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
+
 class SaleController extends Controller
 {
     public function index()
@@ -56,7 +58,11 @@ class SaleController extends Controller
         ]);
         $data['date']=$current_date;
         $data['new_balance'] = $request->opening_balance;
+
+        
         Canteen_Balance::create($data);
+        Alert::success('Welcome!', 'Our cashier is now open and ready to serve you.')->persistent(true);
+        return redirect()->route('sales');
 
     }
 

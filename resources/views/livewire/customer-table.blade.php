@@ -239,10 +239,8 @@
                                       <button onclick="document.getElementById('create_category_modal').showModal()" class="flex items-center justify-center w-full px-3 py-2 m-auto ml-6 text-sm tracking-wide text-white transition-colors duration-200 bg-red-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-red-600 ">    
                                         <span><i class="mr-1 fas fa-trash-alt"></i> Remove</span>
                                     </button>
-                          
-
-          
-                                    </div>
+                        
+                                  </div>
                                 </td>
                             </tr>
                             @endforeach

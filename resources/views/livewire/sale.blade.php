@@ -1,5 +1,5 @@
 <div class="flex">
-
+@include('sweetalert::alert')
 
 
         <aside class="flex flex-col p-2 space-y-2 bg-white border-r-2 border-gray-200 w-72" style="height: 90.5vh"
