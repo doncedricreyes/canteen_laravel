@@ -22,10 +22,10 @@
                 <div class="w-64 shadow-xl">
              
                  @if($items)
+                 
                     @foreach($items as $i)
-                    
                     <div class="flex p-2 bg-white border-b border-gray-100 cursor-pointer hover:bg-gray-100" style="">
-                        <div class="w-12 p-2"><img src="{{asset('images/$i->item->pic')}}" alt="img product"></div>
+                        <div class="w-12 p-2"><img src='{{asset("images/".$i->item->pic)}}' alt="img product"></div>
                         <div class="flex-auto w-32 text-sm">
                             <div class="font-bold text-black">{{$i->item_name}}</div>
                             <div class="text-black truncate">{{$i->item->description}}</div>

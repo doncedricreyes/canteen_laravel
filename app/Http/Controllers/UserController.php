@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
         return view('auth.index',['users'=>$users]);
     }
 
@@ -40,6 +40,49 @@ class UserController extends Controller
         }
     }
 
+    public function user_update(User $id, Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required',
+            'username' => ['required',Rule::unique('users')->ignore($id->id)],
+            'email' => [Rule::unique('users')->ignore($id->id)],
+            'role' => 'required',
+            'password' => 'confirmed'
+        ]);
+        if($request->filled('password'))
+        {
+        $password = bcrypt($data['password']);
+        $id->password = $password;
+        }
+
+        $id->name = $data['name'];
+        $id->username = $data['username'];
+        $id->email = $data['email'];
+        $id->role = $data['role'];
+        
+        if($id->save())
+        {
+            Alert::success('Account Updated!', 'Your account has been successfully updated.');
+            return redirect('/users');
+        }
+    }
+
+    public function user_remove(User $id)
+    {
+        $id->status = 0;
+        $id->save();
+        Alert::success('Account Removed!', 'Your account has been successfully removed.');
+        return redirect('/users');
+    }
+
+    public function user_restore(User $id)
+    {
+        $id->status = 1;
+        $id->save();
+        Alert::success('Account Restored!', 'Your account has been successfully restored.');
+        return redirect('/users');
+    }
+
     public function login_index()
     {
         return view('auth.login');
@@ -58,6 +101,7 @@ class UserController extends Controller
         }
         else
         {
+            Alert::error('Invalid Account!', 'Invalid username or password. Please try again.')->persistent(true);
             return redirect('/login')->withErrors(['login'=>'Invalid Username or Password!']);
         }
     }

@@ -47,6 +47,55 @@
           
         </div>
 </dialog>
+
+@foreach($category as $i)
+<dialog id="edit_category_modal-{{$i->id}}" class="w-1/2 p-5 bg-white rounded-md md:w-1/2 ">
+        
+   <div class="flex flex-col w-full h-auto ">
+        <!-- Header -->
+        <div class="flex items-center justify-center w-full h-auto">
+          <div class="flex items-center justify-center w-10/12 h-auto py-3 text-2xl font-bold">
+                Create New Category
+          </div>
+          <div onclick="document.getElementById('edit_category_modal-{{$i->id}}').close();" class="flex justify-center w-1/12 h-auto cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+
+   
+          <!--Header End-->
+        </div>
+          <!-- Modal Content-->
+          <!-- component -->
+          <form method="POST" action="/category/{{$i->id}}" enctype="multipart/form-data">
+            @method('PUT')
+            @csrf
+          <div class="flex flex-col px-8 pt-6 pb-8 my-2 mb-4 bg-white rounded shadow-md">
+            <div class="mb-6 -mx-3 md:flex">
+              <div class="w-full px-3 mb-6 md:w-full md:mb-0">
+                <label class="block mb-3 text-xs font-bold tracking-wide uppercase text-grey-darker" for="lastname">
+                  Category Name
+                </label>
+                <input class="block w-full px-4 py-3 mb-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-red" id="category" name="category" type="text" placeholder="Category Name" value="{{$i->category}}" required>
+      
+              </div>
+            </div>
+           
+            <div class="mb-4 -mx-3 md:flex">
+            <div class="flex flex-col items-end justify-end mt-2 md:w-full">
+                  <button class="px-4 py-2 text-lg text-gray-100 bg-blue-600 rounded-lg" type="submit">
+                    Confirm
+                  </button>
+            </div>
+          </div>
+          </div>
+</form>
+          <!-- End of Modal Content-->
+          
+          
+          
+        </div>
+</dialog>
+@endforeach
 <section class="container px-4 mx-auto">
 @include('sweetalert::alert')
     <div class="sm:flex sm:items-center sm:justify-between">
@@ -63,10 +112,10 @@
             <div class="flex items-center gap-x-3">
                 <h1 class="mt-10 text-xl font-medium text-gray-800 dark:text-white">Categories</h1>
            
-                <span class="px-3 py-1 mt-10 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{{$category->count()}}</span>
+                <span class="px-3 py-1 mt-10 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{{$category->total()}}</span>
             </div>
 
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">The total number of categories created in the system.</p>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">The total number of categories active in the system.</p>
         </div>
 
         <button onclick="document.getElementById('create_category_modal').showModal()" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
@@ -115,7 +164,7 @@
                        @foreach($category as $i)
                             <tr>
                               <td class="px-4 py-4">
-                                {{$loop->iteration}}
+                                {{ $loop->iteration + ($category->currentPage() - 1) * $category->perPage() }}.
                               </td>
                                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div>
@@ -137,21 +186,28 @@
                                 <td class="px-4 py-4 text-sm whitespace-nowrap ">
                                 <div class="flex flex-row ">
                                     
-                                    <button onclick="document.getElementById('create_category_modal').showModal()" class="flex items-center justify-center w-full px-3 py-2 m-auto text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                                    <button onclick="document.getElementById('edit_category_modal-{{$i->id}}').showModal()" class="flex items-center justify-center w-full px-3 py-2 m-auto text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                                       <span><i class="mr-1 fas fa-pencil-alt"></i> Edit</span>
                                     </button>
 
+                        <form action="/category/remove/{{$i->id}}" method="POST" class="delete-form">
+                            @csrf
+                            @method('PUT')
                                   @if($i->status == 1)
-                                      <button   class="flex items-center justify-center w-full px-3 py-2 m-auto ml-6 text-sm tracking-wide text-white transition-colors duration-200 bg-red-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-red-600 " data-confirm-delete="true">    
+                                      <button id="remove"  class="flex items-center justify-center w-full px-3 py-2 mr-8 text-sm tracking-wide text-white transition-colors duration-200 bg-red-500 rounded-lg delete-button shrink-0 sm:w-auto gap-x-2 hover:bg-red-600 " data-item-id="{{ $i->id }}" >    
                                         <span><i class="mr-1 fas fa-trash-alt"></i> Remove</span>
                                     </button>
                                   @endif
-
+                        </form>
+                         <form action="/category/restore/{{$i->id}}" method="POST" >
+                            @csrf
+                            @method('PUT')
                                   @if($i->status == 0)
-                                      <button onclick="document.getElementById('create_category_modal').showModal()" class="flex items-center justify-center w-full px-3 py-2 m-auto ml-6 text-sm tracking-wide text-white transition-colors duration-200 bg-green-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-green-600 ">    
-                                        <span><i class="mr-1 fas fa-trash-alt"></i> Restore</span>
+                                      <button id="restore" class="flex items-center justify-center w-full px-3 py-2 mr-8 text-sm tracking-wide text-white transition-colors duration-200 bg-green-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-green-600 ">    
+                                        <span><i class="mr-1 fas fa-undo"></i> Restore</span>
                                     </button>
                                   @endif
+                                     </form>
                                     </div>
                                 </td>
                             </tr>
@@ -162,35 +218,18 @@
             </div>
         </div>
     </div>
+   
+ 
 
-    <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
-        <div class="text-sm text-gray-500 dark:text-gray-400">
-            Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span> 
-        </div>
+<div class="mt-5 mb-3">     
+{{ $category->links() }}
 
-        <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
-            <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-                </svg>
-
-                <span>
-                    previous
-                </span>
-            </a>
-
-            <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                <span>
-                    Next
-                </span>
-
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                </svg>
-            </a>
-        </div>
-    </div>
+</div>  
+   
 </section>
+
+
+
 
 </div>
 

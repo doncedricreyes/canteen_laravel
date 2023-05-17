@@ -2,19 +2,19 @@
 @include('sweetalert::alert')
 
 
-        <aside class="flex flex-col p-2 space-y-2 bg-white border-r-2 border-gray-200 w-72" style="height: 90.5vh"
+        <aside class="overflow-scroll sticky top-0 flex flex-col p-2 space-y-2 bg-white border-r-2 border-gray-200 w-72" style="height: 90.5vh"
             x-show="asideOpen">
             <ul class="space-y-2">
             <li>
 					<a href="#" wire:click.prevent="sort('all')"
-						class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+						class="flex items-center p-2 py-5 text-lg  font-normal text-gray-900 rounded-lg  hover:bg-blue-200 shadow-md">
 						<span class="ml-3">All Categories</span>
 					</a>
 				</li>
                 @foreach($category as $i)
 				<li>
 					<a href="#" wire:click.prevent="sort({{$i->id}})"
-						class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+						class="flex items-center p-2 py-5 text-lg  font-normal text-gray-900 rounded-lg  hover:bg-blue-200 shadow-md">
 						<span class="ml-3">{{$i->category}}</span>
 					</a>
 				</li>

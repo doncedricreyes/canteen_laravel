@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Item;
 use RealRashid\SweetAlert\Facades\Alert;
-
+use Illuminate\Validation\Rule;
 
 class ItemController extends Controller
 {
     public function category_index()
     {
-        $category = Category::all();
+        $category = Category::paginate(10);
         $title = 'Remove Category!';
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);
@@ -39,6 +39,39 @@ class ItemController extends Controller
             Alert::error('Error Title', 'Error Message');
             return redirect('/categoryasdasd');
         }
+    }
+
+    public function category_update(Category $id, Request $request)
+    {
+        $data = $request->validate([
+            'category' => ['required',Rule::unique('categories')->ignore($id->id)],
+        ]);
+        $id->category = $request->category;
+        if($id->save())
+        {
+            alert::success('Success!', 'Category Successfully Updated');
+            return redirect()->route('category_index');
+        }
+        else{
+            Alert::success('Success!', 'Category Successfully Created');
+            return redirect()->route('category_index');
+        }
+    }
+
+    public function category_remove(Category $id)
+    {
+        $id->status = 0;
+        $id->save();
+        Alert::success('Success!', 'Category Successfully Removed');
+        return redirect()->route('category_index');
+    }
+
+    public function category_restore(Category $id)
+    {
+        $id->status = 1;
+        $id->save();
+        Alert::success('Success!', 'Category Successfully Restored');
+        return redirect()->route('category_index');
     }
 
 
@@ -69,6 +102,10 @@ class ItemController extends Controller
         $filename = time().'.'.$image->getClientOriginalExtension();
         $image->move(public_path('images'),$filename);
         $data['pic'] = $filename;
+        }
+        else
+        {
+            $data['pic'] = 'default.png';
         }
         //dd($data);
         $query = Item::create($data);

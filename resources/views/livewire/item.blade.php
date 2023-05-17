@@ -1,4 +1,4 @@
-<div class="bg-rose-50">
+<div >
   @include('sweetalert::alert')
 <div class="flex flex-row">
     <div class="w-1/4 px-5 py-5">
@@ -14,7 +14,7 @@
     </div>
 
 <div class="w-1/4 px-5 py-5">
-    <select id="category_id" name="category_id" wire:model="category_sort" wire:change='sort()' class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your Recipe" required>
+    <select id="category_id" name="category_id" wire:model="category_sort" wire:change='sort()' class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
     <option value="all">All Categories</option>
  
     @foreach($category as $i)
@@ -22,9 +22,9 @@
     @endforeach
     </select>
 </div>           
-<div class="w-1/4 px-5 py-5">
-<button type="button" class="px-4 py-2 text-lg text-gray-100 bg-blue-600 rounded-lg" onclick="document.getElementById('item_modal').showModal()">
-  Add Item
+<div class="w-1/4 px-5 py-5 flex ml-auto">
+<button type="button" class="ml-20 px-4 py-1 text-md text-gray-100 bg-blue-600 rounded-lg" onclick="document.getElementById('item_modal').showModal()">
+  Create New Item
 </button>
 </div>
 </div>
@@ -89,13 +89,14 @@
                 <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="name">
                   Item Name 
                 </label>
-                <input class="block w-full px-4 py-3 mb-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-red" id="name" name="name" type="text" value="{{$i->name}}">
+                <input class="block w-full px-4 py-3 mb-3 border rounded appearance-none " id="name" name="name" type="text" value="{{$i->name}}">
               </div>
               <div class="px-3 md:w-1/2">
                 <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="grid-last-name">
                   Category 
                 </label>
-              <select class="block w-full px-4 py-3 mb-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-red" id="category_id_edit" name="category_id">
+              
+              <select class="block w-full px-4 py-3 mb-3 border rounded " id="category_id_edit" name="category_id">
              
                   @foreach($category as $cat)
                   <option value="{{$cat->id}}">{{$cat->category}}</option>
@@ -119,19 +120,19 @@
                 <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="qty">
                   Quantity
                 </label>
-                <input class="block w-full px-4 py-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-grey-lighter" id="qty" name="qty" type="number" value="{{$i->qty}}">
+                <input class="block w-full px-4 py-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-grey-lighter" id="qty" name="qty" type="number" value="{{$i->qty}}" min="1">
               </div>
               <div class="px-3 md:w-1/2">
               <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="buy_price">
                   Cost
                 </label>
-                <input class="block w-full px-4 py-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-grey-lighter" id="buy_price" name="buy_price" type="number" value="{{$i->buy_price}}">
+                <input class="block w-full px-4 py-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-grey-lighter" id="buy_price" name="buy_price" type="number" value="{{$i->buy_price}}" min="1">
               </div>
               <div class="px-3 md:w-1/2">
                 <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="sell_price">
                   Selling Price
                 </label>
-                <input class="block w-full px-4 py-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-grey-lighter" id="sell_price" name="sell_price" type="number" value="{{$i->sell_price}}">
+                <input class="block w-full px-4 py-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-grey-lighter" id="sell_price" name="sell_price" type="number" value="{{$i->sell_price}}" min="1">
               </div>
             </div>
               @livewire('image')

@@ -1,18 +1,18 @@
 @extends('layouts.navbar')
-@include('sweetalert::alert')
 @section('content')
+@include('sweetalert::alert')
 <div>
 <!-- component -->
 <section class="container px-4 mx-auto">
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>
             <div class="flex items-center gap-x-3">
-                <h1 class="mt-10 text-xl font-medium text-gray-800 dark:text-white">Customers</h1>
+                <h1 class="mt-10 text-xl font-medium text-gray-800 dark:text-white"><i class="fa fa-users"></i> User Accounts</h1>
            
-                <span class="px-3 py-1 mt-10 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{{$users->count()}}</span>
+                <span class="px-3 py-1 mt-10 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{{$users->total()}}</span>
             </div>
 
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">The total number of customers registered in the system.</p>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">The total number of authorized accounts in the system.</p>
         </div>
 
         <div class="flex items-center mt-4 gap-x-3">
@@ -29,27 +29,11 @@
     </div>
 
     <div class="mt-6 md:flex md:items-center md:justify-between">
-        <div class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
-            <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300">
-                View all
-            </button>
 
-            <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                Monitored
-            </button>
-
-            <button class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                Unmonitored
-            </button>
-        </div>
 
         <div class="relative flex items-center mt-4 md:mt-0">
-            <span class="absolute">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
-            </span>
 
+ 
             <!-- <input wire:model.lazy="search" wire:change="search()" type="text" placeholder="Search" class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"> -->
         </div>
     </div>
@@ -97,7 +81,7 @@
                             <tr>
                                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                     <div>
-                                        <h2 class="font-medium text-gray-800 dark:text-white ">{{$i->name}}, </h2>
+                                        <h2 class="font-medium text-gray-800 dark:text-white ">{{$i->name}} </h2>
                                     </div>
                                 </td>
                                 <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
@@ -120,14 +104,29 @@
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                 <div class="flex flex-row ">
                                     
-                                    <button onclick="document.getElementById('create_category_modal').showModal()" class="flex items-center justify-center w-full px-3 py-2 m-auto text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
+                                    <button onclick="document.getElementById('edit_user_modal-{{$i->id}}').showModal()" class="flex items-center justify-center w-full px-3 py-2 m-auto text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                                       <span><i class="mr-1 fas fa-pencil-alt"></i> Edit</span>
                                     </button>
 
-                                      <button onclick="document.getElementById('create_category_modal').showModal()" class="flex items-center justify-center w-full px-3 py-2 m-auto ml-0 text-sm tracking-wide text-white transition-colors duration-200 bg-red-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-red-600 ">    
+                                <form action="/users/remove/{{$i->id}}" method="POST" class="delete-form">
+                                  @csrf
+                                  @method('PUT')
+                                  @if($i->status == 1)
+                                      <button id="remove"  class="flex items-center justify-center w-full px-3 py-2 mr-8 text-sm tracking-wide text-white transition-colors duration-200 bg-red-500 rounded-lg delete-button shrink-0 sm:w-auto gap-x-2 hover:bg-red-600 " data-item-id="{{ $i->id }}" >    
                                         <span><i class="mr-1 fas fa-trash-alt"></i> Remove</span>
                                     </button>
-                        
+                                  @endif
+                               </form>
+                              <form action="/users/restore/{{$i->id}}" method="POST" >
+                                 @csrf
+                                 @method('PUT')
+                                  @if($i->status == 0)
+                                      <button id="restore" class="flex items-center justify-center w-full px-3 py-2 mr-8 text-sm tracking-wide text-white transition-colors duration-200 bg-green-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-green-600 ">    
+                                        <span><i class="mr-1 fas fa-undo"></i> Restore</span>
+                                    </button>
+                                  @endif
+                                     </form>
+                                
                                   </div>
                                 </td>
                             </tr>
@@ -140,33 +139,10 @@
         </div>
     </div>
 
-    <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
-        <div class="text-sm text-gray-500 dark:text-gray-400">
-            Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span> 
-        </div>
+   <div class="mt-5 mb-3">     
+{{ $users->links() }}
 
-        <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
-            <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-                </svg>
-
-                <span>
-                    previous
-                </span>
-            </a>
-
-            <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                <span>
-                    Next
-                </span>
-
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                </svg>
-            </a>
-        </div>
-    </div>
+</div>  
 </section>
 
 </div>
@@ -258,5 +234,98 @@
           
         </div>
 </dialog>
+
+
+
+
+@foreach($users as $i)
+<dialog id="edit_user_modal-{{$i->id}}" class="w-11/12 h-auto p-5 bg-white rounded-md md:w-11/12 ">
+        
+   <div class="flex flex-col w-full h-auto ">
+        <!-- Header -->
+        <div class="flex items-center justify-center w-full h-auto">
+          <div class="flex items-center justify-center w-10/12 h-auto py-3 text-2xl font-bold">
+            <i class="fas fa-user mr-2"></i>  Update User Information
+          </div>
+          <div onclick="document.getElementById('edit_user_modal-{{$i->id}}').close();" class="flex justify-center w-1/12 h-auto cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+
+   
+          <!--Header End-->
+        </div>
+          <!-- Modal Content-->
+          <!-- component -->
+          <form method="POST" action="/users/update/{{$i->id}}" enctype="multipart/form-data">
+              @method('PUT')
+              @csrf
+          <div class="flex flex-col px-8 pt-6 pb-8 my-2 mb-4 bg-white rounded shadow-md">
+            <div class="mb-6 -mx-3 md:flex">
+              <div class="px-3 mb-6 md:w-1/2 md:mb-0">
+                <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="name">
+                  Name
+                </label>
+                <input class="block w-full px-4 py-3 mb-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-red" id="name" name="name" type="text" placeholder="Name" value="{{$i->name}}" required>
+              </div>
+              <div class="px-3 md:w-1/2">
+                <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="firstname">
+                  Username
+                </label>
+                <input class="block w-full px-4 py-3 mb-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-red" id="username" name="username" type="text" placeholder="User Name" value="{{$i->username}}" required>
+              </div>
+            </div>
+
+            <div class="mb-6 -mx-3 md:flex">
+              <div class="px-3 mb-6 md:w-1/2 md:mb-0">
+                <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="email">
+                  Email
+                </label>
+                <input class="block w-full px-4 py-3 mb-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-red" id="email" name="email" type="email" value="{{$i->email}}" placeholder="Email Address">
+              </div>
+              <div class="px-3 md:w-1/2">
+                <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="role">
+                 Role
+                </label>
+                <select class="block w-full px-4 py-3 mb-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-red" id="role" name="role">
+                <option value="{{$i->role}}" selected>{{$i->role}}</option>
+                <option value="Admin">Admin</option>
+                <option value="Canteen">Canteen</option>
+                <option value="Cashier">Cashier</option>
+                </select>
+              </div>
+
+            </div>
+   
+            <div class="mb-2 -mx-3 md:flex">
+            <div class="px-3 md:w-1/2">
+                <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="password">
+                 Change Password
+                </label>
+                <input class="block w-full px-4 py-3 mb-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-red" id="password" name="password" type="password" placeholder="Password">
+              </div>
+              <div class="px-3 md:w-1/2">
+                <label class="block mb-2 text-xs font-bold tracking-wide uppercase text-grey-darker" for="password_confirmation" required>
+                  Confirm Password
+                </label>
+                <input class="block w-full px-4 py-3 mb-3 border rounded appearance-none bg-grey-lighter text-grey-darker border-red" id="password_confirmation" name="password_confirmation" type="password" placeholder="Confirm Password">
+              </div>
+            </div>
+           
+            <div class="mb-4 -mx-3 md:flex">
+            <div class="flex flex-col items-end justify-end mt-2 md:w-full">
+                  <button class="px-4 py-2 text-lg text-gray-100 bg-blue-600 rounded-lg" type="submit">
+                   Update Information
+                  </button>
+            </div>
+          </div>
+          </div>
+</form>
+          <!-- End of Modal Content-->
+          
+          
+          
+        </div>
+</dialog>
+@endforeach
 
 @endsection

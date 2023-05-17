@@ -26,14 +26,15 @@ Route::post('/login',[UserController::class,'login']);
 
 
 Route::middleware(['auth'])->group(function () {
-Route::get('/category',[ItemController::class,'category_index']);
+Route::get('/category',[ItemController::class,'category_index'])->name('category_index');
 Route::post('/category',[ItemController::class,'category_store']);
-
+Route::put('/category/{id}',[ItemController::class,'category_update']);
+Route::put('/category/remove/{id}',[ItemController::class,'category_remove']);
+Route::put('/category/restore/{id}',[ItemController::class,'category_restore']);
 Route::get('/items',[ItemController::class,'item_index']);
 Route::post('/items/store',[ItemController::class,'item_store']);
 Route::put('/items/update/{id}',[ItemController::class,'item_update']);
 Route::put('/items/remove/{id}',[ItemController::class,'item_remove']);
-
 Route::get('/customers',[CustomerController::class,'index']);
 Route::post('/customers',[CustomerController::class,'store']);
 Route::get('/customers/balance',[CustomerController::class,'check_balance']);
@@ -47,6 +48,9 @@ Route::get('/sales/receipt/{id}',[SaleController::class,'receipt'])->name('print
 
 Route::get('/users',[UserController::class,'index'])->name('user_index');
 Route::post('/users/store',[UserController::class,'register']);
+Route::put('/users/update/{id}',[UserController::class, 'user_update']);
+Route::put('/users/remove/{id}',[UserController::class, 'user_remove']);
+Route::put('/users/restore/{id}',[UserController::class, 'user_restore']);
 Route::get('/profile',[UserController::class,'profile']);
 Route::put('/profile',[UserController::class,'update_profile']);
 Route::get('/logout',[UserController::class,'logout']);
