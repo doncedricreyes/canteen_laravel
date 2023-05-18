@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +46,6 @@ Route::get('/sales',[SaleController::class,'index'])->middleware('auth')->name('
 Route::get('/open_balance',[SaleController::class,'opening_balance'])->middleware('auth')->name('open_balance');
 Route::post('/open_balance',[SaleController::class,'store_opening_balance'])->middleware('auth');
 Route::get('/sales/receipt/{id}',[SaleController::class,'receipt'])->name('print');
-
 Route::get('/users',[UserController::class,'index'])->name('user_index');
 Route::post('/users/store',[UserController::class,'register']);
 Route::put('/users/update/{id}',[UserController::class, 'user_update']);
@@ -54,6 +54,10 @@ Route::put('/users/restore/{id}',[UserController::class, 'user_restore']);
 Route::get('/profile',[UserController::class,'profile']);
 Route::put('/profile',[UserController::class,'update_profile']);
 Route::get('/logout',[UserController::class,'logout']);
+
+Route::get('/reports/sales',[ReportController::class,'sales_report']);
+Route::get('/reports/customers',[ReportController::class,'customers_report']);
+Route::get('/reports/customers/{level}/{section}',[ReportController::class,'customers_section']);
 
 
 });
